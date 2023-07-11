@@ -1,0 +1,81 @@
+
+
+	MERGE [dbo].Integration  AS target
+USING    @testdata AS  source ON target.ApplicationCode  = source.ApplicationCode
+WHEN MATCHED THEN
+    -- Update statement
+    UPDATE SET  
+	 target.UpdatedOn       =source.UpdatedOn    
+	,target.UpdatedBy    	=source.UpdatedBy   
+
+WHEN NOT MATCHED THEN
+    -- Insert statement
+    INSERT (
+	[IntegrationName] ,
+	[ApplicationName] ,
+	[ApplicationCode] ,
+	[HasModelNumber]  ,
+	[CreatedOn]  ,
+	[CreatedBy] ,
+	[UpdatedOn]  ,
+	[UpdatedBy]  	)
+    VALUES (
+	null    
+	,null   
+	,source.ApplicationCode
+	,0	
+	,source.CreatedOn   	
+	,source.CreatedBY 	
+	,source.UpdatedOn 
+	,source.UpdatedBy
+	);
+
+
+
+
+MERGE [dbo].[EnrollmentRequests]  AS target
+USING (
+    SELECT 
+	 t1.TpDealerId    
+	,t1.TpDealerName  
+	,t1.TpDealerAddress
+	,t1.TpDealerState 
+	,t1.TpDealerZip   
+	,t1.TpDealerPhone 
+	,t1.TpDealerEmail 	
+	,t2.ID
+    FROM @testdata AS t1
+    LEFT JOIN Integration AS t2 ON t1.ApplicationCode = t2.ApplicationCode
+) AS source ON target.[IntegrationID]  = source.ID
+WHEN MATCHED THEN
+    -- Update statement
+    UPDATE SET  
+	 target.Tp_DealerId       =source.TpDealerId    
+	,target.Tp_DealerName    	=source.TpDealerName  
+	,target.Tp_DealerAddress	=source.TpDealerAddress
+	,target.Tp_DealerState 	=source.TpDealerState 
+	,target.Tp_DealerZip   	=source.TpDealerZip   
+	,target.Tp_DealerPhone 	=source.TpDealerPhone 
+	,target.Tp_DealerEmail 	=source.TpDealerEmail 
+
+WHEN NOT MATCHED THEN
+    -- Insert statement
+    INSERT (
+	IntegrationID,
+	Tp_DealerId     
+	,Tp_DealerName  	
+	,Tp_DealerAddress
+	,Tp_DealerState 	
+	,Tp_DealerZip   	
+	,Tp_DealerPhone 	
+	,Tp_DealerEmail 	)
+    VALUES (
+	source.id,
+	 source.TpDealerId     
+	,source.TpDealerName   
+	,source.TpDealerAddress
+	,source.TpDealerState 	
+	,source.TpDealerZip   	
+	,source.TpDealerPhone 	
+	,source.TpDealerEmail 	
+	);
