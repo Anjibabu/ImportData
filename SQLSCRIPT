@@ -1,4 +1,25 @@
+DECLARE @testdata TABLE (
+    ApplicationCode VARCHAR(200),
+    TpDealerId      VARCHAR(200),
+    TpDealerName     VARCHAR(200),
+    TpDealerAddress  VARCHAR(200),
+    TpDealerState     VARCHAR(200),
+    TpDealerZip       VARCHAR(200),
+    TpDealerPhone     VARCHAR(200),
+    TpDealerEmail    VARCHAR(200),
+    ShfDealerId VARCHAR(200),
+    ShfDealerName VARCHAR(200),
+    CreatedBy VARCHAR(200),
+    CreatedOn VARCHAR(200),
+    UpdatedBy VARCHAR(200),
+    UpdatedOn VARCHAR(200));
 
+INSERT INTO @testdata VALUES ('APP001', 'LV6565', 'LV Dealer Test', '1232 Abc st', 'NC', '32260', '123-465-1822', 'test@test.com', '51531', 'Test', 'G03291', '6/27/2023 12:00:00 AM', 'G03291', '6/27/2023 12:00:00 AM');
+INSERT INTO @testdata VALUES ('APP002', 'PO518', 'LV Dealer Test', '516 West st', 'NC', '32250', '123-465-1822', 'test@test.com', '53484', 'Jessec', 'G03291', '6/27/2023 12:00:00 AM', 'G03291', '6/27/2023 12:00:00 AM');
+INSERT INTO @testdata VALUES ('EDF', 'PO518', 'LV Dealer Test', '516 West st', 'NC', '32250', '123-465-1822', 'test@test.com', '53484', 'Jessec', 'G03291', '6/27/2023 12:00:00 AM', 'G03291', '6/27/2023 12:00:00 AM');
+
+
+SELECT * FROM  @testdata
 
 	MERGE [dbo].Integration  AS target
 USING    @testdata AS  source ON target.ApplicationCode  = source.ApplicationCode
