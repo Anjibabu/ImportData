@@ -100,3 +100,13 @@ WHEN NOT MATCHED THEN
 	,source.TpDealerPhone 	
 	,source.TpDealerEmail 	
 	);
+
+
+
+INSERT INTO [dbo].[SHFDealers]
+           ([DealerID]
+           ,[DealerName]
+           )
+	SELECT  ShfDealerId ,ShfDealerName
+     FROM @testdata wHERE ShfDealerId not in (SELECT [DealerID] FROM [dbo].[SHFDealers])
+
